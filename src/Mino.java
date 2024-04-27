@@ -17,6 +17,8 @@ public class Mino {
     }
     public void setXY(int x, int y) {}
     public void updateXY(int direction) {
+        if (leftCollision || rightCollision || bottomCollision) return;
+
         this.direction = direction;
 
         for (int i = 0; i < 4; i++) {
@@ -48,7 +50,25 @@ public class Mino {
             } 
         }
     }
-    public void checkRotationCollision() {}
+    public void checkRotationCollision() {
+        leftCollision = false;
+        rightCollision = false;
+        bottomCollision = false;
+
+        for (Block block : tempB) {
+            if (block.x < PlayManager.left_x) {
+                leftCollision = true;
+            }
+
+            if (block.x + Block.SIZE > PlayManager.right_x) {
+                rightCollision = true;
+            }
+
+            if (block.y + Block.SIZE > PlayManager.bottom_y) {
+                bottomCollision = true;
+            } 
+        }
+    }
 
 
     public void update() {
