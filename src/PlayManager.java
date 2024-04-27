@@ -68,9 +68,46 @@ public class PlayManager {
             currentMino.setXY(MINO_START_X, MINO_START_Y);
             nextMino = pickMino();
             nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
+
+            checkDelete();
+        } else {
+            currentMino.update();
+        }
+    }
+
+    private void checkDelete() {
+        int x = left_x;
+        int y = top_y;
+        int blockCount = 0;
+
+        while (x < right_x && y < bottom_y) {            
+            for (Block block : staticBlocks) {
+                if (block.x == x && block.y == y) {
+                    blockCount++;
+                }
+            } 
+    
+            x += Block.SIZE;
+    
+            if (x == right_x) {
+                if (blockCount == 12) { 
+                    //we go from top to bottom, so we need to delete top to bottom as well (newest blocks are on the top)
+                    for (int i = staticBlocks.size() - 1; i >= 0; i--) {
+                        Block block = staticBlocks.get(i);
+                        if (block.y == y) {
+                            staticBlocks.remove(i);
+                        } else if (block.y < y) {
+                            block.y += Block.SIZE;
+                        }
+                    }
+                }
+
+                blockCount = 0;
+                x = left_x;
+                y += Block.SIZE;
+            }
         }
 
-        currentMino.update();
     }
 
     public void draw(Graphics2D g2) {
