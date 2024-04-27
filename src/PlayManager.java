@@ -23,6 +23,7 @@ public class PlayManager {
     public static ArrayList<Block> staticBlocks = new ArrayList<>();
 
     public static int dropInterval = 60; // = 60 frames
+    boolean gameOver;
 
     public PlayManager() {
         left_x = (GamePanel.WIDTH/2) - (WIDTH/2);
@@ -64,15 +65,20 @@ public class PlayManager {
                 staticBlocks.add(block);
             }
 
+            if (currentMino.b[0].x == MINO_START_X && currentMino.b[0].y == MINO_START_Y) {
+                //if mino could't move it means it's game over
+                gameOver = true;
+            }
+
             currentMino = nextMino;
             currentMino.setXY(MINO_START_X, MINO_START_Y);
             nextMino = pickMino();
             nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
 
             checkDelete();
-        } else {
-            currentMino.update();
-        }
+        } 
+
+        currentMino.update();
     }
 
     private void checkDelete() {
@@ -136,6 +142,12 @@ public class PlayManager {
     
         g2.setColor(Color.yellow);
         g2.setFont(g2.getFont().deriveFont(50f));
+        if (gameOver) {
+            x = left_x + 35;
+            y = top_y + 320;
+            g2.drawString("GAME OVER", x, y);
+
+        }
         if (KeyHandler.pausePressed) {
             x = left_x + 90;
             y = top_y + 320;
