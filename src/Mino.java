@@ -6,6 +6,7 @@ public class Mino {
     public Block tempB[] = new Block[4];
     int autoDropCounter = 0;
     public int direction = 1;
+    public boolean active = true;
     
     boolean leftCollision, rightCollision, bottomCollision;
 
@@ -115,6 +116,11 @@ public class Mino {
             KeyHandler.rightPressed = false;
         }
 
+        if (bottomCollision) {
+            active = false;
+            return;
+        }
+        
         autoDropCounter++;
 
         if (autoDropCounter == PlayManager.dropInterval) {
@@ -128,7 +134,7 @@ public class Mino {
         g2.setColor(b[0].c);
         int margin = 2;
         for (Block block : b) {
-            g2.fillRect(block.x + margin, block.y + margin, Block.SIZE - (margin * 2), Block.SIZE - (margin * 2));
+            g2.fillRect(block.x + margin, block.y + margin, Block.SIZE - margin * 2, Block.SIZE - margin * 2);
         }
     }
 }

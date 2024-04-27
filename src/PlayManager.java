@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class PlayManager {
@@ -16,6 +17,10 @@ public class PlayManager {
     Mino currentMino;
     final int MINO_START_X;
     final int MINO_START_Y;
+    Mino nextMino;
+    final int NEXTMINO_X;
+    final int NEXTMINO_Y;
+    public static ArrayList<Block> staticBlocks = new ArrayList<>();
 
     public static int dropInterval = 60; // = 60 frames
 
@@ -27,9 +32,13 @@ public class PlayManager {
 
         MINO_START_X = left_x + (WIDTH / 2) - Block.SIZE;
         MINO_START_Y = top_y + Block.SIZE;
+        NEXTMINO_X = right_x + 195;
+        NEXTMINO_Y = top_y + 520;
 
         currentMino = pickMino();
         currentMino.setXY(MINO_START_X, MINO_START_Y);
+        nextMino = pickMino();
+        nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
     }
 
     private Mino pickMino() {
@@ -50,6 +59,17 @@ public class PlayManager {
     }
 
     public void update() {
+        if (!currentMino.active) {
+            for (Block block : currentMino.b) {
+                staticBlocks.add(block);
+            }
+
+            currentMino = nextMino;
+            currentMino.setXY(MINO_START_X, MINO_START_Y);
+            nextMino = pickMino();
+            nextMino.setXY(NEXTMINO_X, NEXTMINO_Y);
+        }
+
         currentMino.update();
     }
 
@@ -69,6 +89,12 @@ public class PlayManager {
 
         if (currentMino != null) {
             currentMino.draw(g2);
+        }
+
+        nextMino.draw(g2);;
+
+        for (Block block : staticBlocks) {
+            block.draw(g2);
         }
     
         g2.setColor(Color.yellow);
