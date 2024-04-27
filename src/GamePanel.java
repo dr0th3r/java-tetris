@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints.Key;
 
 public class GamePanel extends JPanel implements Runnable {
     public static final int WIDTH = 1280;
@@ -50,7 +51,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void update() {
-        pm.update();
+        if (!KeyHandler.pausePressed) {
+            pm.update();
+        }
     }
     
     public void paintComponent(Graphics g) {

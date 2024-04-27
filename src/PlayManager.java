@@ -55,7 +55,7 @@ public class PlayManager {
 
     public void draw(Graphics2D g2) {
 
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.white);
         g2.setStroke(new BasicStroke(4f));
         g2.setFont(new Font("Arail", Font.PLAIN, 30));
         //draw play area frame
@@ -69,6 +69,14 @@ public class PlayManager {
 
         if (currentMino != null) {
             currentMino.draw(g2);
+        }
+    
+        g2.setColor(Color.yellow);
+        g2.setFont(g2.getFont().deriveFont(50f));
+        if (KeyHandler.pausePressed) {
+            x = left_x + 90;
+            y = top_y + 320;
+            g2.drawString("PAUSED", x, y);
         }
     } 
 }
